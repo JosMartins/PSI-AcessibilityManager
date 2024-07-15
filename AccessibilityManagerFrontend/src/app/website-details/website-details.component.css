@@ -1,0 +1,138 @@
+.invalid-hint {
+    color: red;
+}
+
+.add-page-btn{
+    background-color: rgb(71, 166, 71);
+    color: white;  
+    font-weight: bold;
+    border-radius: 3px;
+    font-size: 16px;
+    border-color: rgb(71, 166, 71);
+    border-style: hidden;
+    height: 45px;
+    width: 90px;
+}
+
+.add-page-btn:hover {
+    background-color: green;
+    border-color: green;
+    border-style: hidden;
+    color: white;
+}
+
+
+
+.backbtn {
+    margin-top: 10px;
+    background-color: rgb(225, 225, 225);
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    margin-left: 1%;
+
+}
+
+.message {
+    color: red;
+    margin-left: 60px;
+}
+
+.delete-website-button {
+    background-color: rgb(204, 47, 47); 
+    color: white !important;
+    font-size: medium;
+}
+
+.delete-pages-button {
+    background-color: rgb(204, 47, 47); 
+    color: white !important;
+    font-size: medium;
+}
+
+.delete-icon {
+    font-size: 28px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -55px;
+}
+
+.delete-pages {
+    align-self: flex-end;   
+}
+
+.delete-website {
+    align-self: flex-end;
+}
+
+.container-checkbox {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; 
+    font-size: medium;
+    margin-right: 2%;
+}
+
+
+.page-item {
+    display:flex;
+    align-items: center;
+
+}
+
+.unit-checkbox {
+    height: 17px;
+    width: 17px;
+
+}
+
+
+.global-checkbox {
+    height: 17px;
+    width: 17px;
+}
+
+
+.page-infos-container {
+    display: flex; 
+}
+
+.page-infos {
+    flex: 0.845; 
+}
+
+.url-container {
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.checkbox-container {
+    flex-shrink: 0; 
+    width: fit-content; 
+}
+
+.evaluate-pages-button{
+    background-color: rgb(36, 175, 230);
+    font-size: medium;
+    color: white !important;
+}
+
+
+.generate-website-report-button {
+    background-color: rgb(255, 149, 0);
+    font-size: medium;
+    color: white !important;
+}
+
+.generate-website-report-button-pdf {
+    background-color: rgb(255, 149, 0);
+    font-size: medium;
+    color: white !important;
+}

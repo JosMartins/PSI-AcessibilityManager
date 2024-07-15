@@ -1,0 +1,52 @@
+.demo-table {
+    width: 100%;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: currentColor;
+}
+
+.demo-row-is-clicked {
+    font-weight: bold;
+}
+
+.mat-elevation-z8 .add-website-button {
+    color: #ffffff;
+    background-color: rgb(71, 166, 71);
+}
+
+.add-website-button:hover {
+    background-color: green;
+    color: white;
+}
+
+.add-website-button {
+    margin-left: 1%;
+}
+
+.barra.inferior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.focused {
+    background: darkgray; 
+    outline: 2px solid green;
+  }
+
+.deleteBtn {
+    color: rgb(204, 47, 47);
+}
+
+.evaluate-icon {
+    background-color: rgb(36, 175, 230);
+    color:rgba(255, 255, 255, 0.945);
+    border-radius: 4px;
+}

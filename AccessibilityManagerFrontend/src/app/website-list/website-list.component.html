@@ -1,0 +1,87 @@
+<div class="filter">
+    <mat-form-field>
+        <mat-select name="filter" (selectionChange)="applyFilter($event)" [(ngModel)]="selectedOption" tabindex="0">
+            <mat-option tabindex="0" class="filter-option"value="all">All</mat-option>
+            <mat-option tabindex="0" class="filter-option"value="Por Avaliar">Por Avaliar</mat-option>
+            <mat-option tabindex="0" class="filter-option"value="Em Avaliação">Em Avaliação</mat-option>
+            <mat-option tabindex="0" class="filter-option"value="Avaliado">Avaliado</mat-option>
+            <mat-option tabindex="0" class="filter-option"value="Erro na Avaliação">Erro na Avaliação</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+        <!-- URL Column -->
+        <ng-container matColumnDef="url">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by URL"> URL </th>
+            <td mat-cell *matCellDef="let website"> {{website.url}} </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Status </th>
+            <td mat-cell *matCellDef="let website"> {{website.status}} </td>
+        </ng-container>
+
+        <!-- Pages Column -->
+        <ng-container matColumnDef="pages">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by pages"> Pages </th>
+            <td mat-cell *matCellDef="let website"> {{getPagesCount(website.pages)}} </td>
+        </ng-container>
+
+        <!-- Date Added Column -->
+        <ng-container matColumnDef="dateAdded">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date added"> Date Added
+            </th>
+            <td mat-cell *matCellDef="let website"> {{website.dateAdded | date}} </td>
+        </ng-container>
+
+        <!-- Last Report Date Column -->
+        <ng-container matColumnDef="lastReportDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by last report date"> Last
+                Report Date
+            </th>
+            <td mat-cell *matCellDef="let website"> {{website.lastReportDate ? (website.lastReportDate | date) : 'N/A'}}
+            </td>    
+        </ng-container>
+
+        <!-- Pages Evaluation Column-->
+        <ng-container matColumnDef="evaluateWebsite">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let website">
+              <button mat-icon-button (click)="evaluateWebsiteDialog($event,website._id, website.pages)" (keydown.enter)="evaluateWebsiteDialog($event,website._id, website.pages)">
+                <mat-icon color = "primary" >assessment</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+         <!-- Delete Website Column -->
+            <ng-container matColumnDef="deleteWebsite">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let website">
+                <button mat-icon-button class="deleteBtn" (click)=" deleteConfirmationDialog($event, website._id, website.pages)" (keydown.enter)=" deleteConfirmationDialog($event,website, website.pages) ">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+          
+        
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>        
+        <tr mat-row (click)="openWebsite(website._id)" (keydown.enter)="openWebsite(website._id)" *matRowDef="let website; columns: displayedColumns;" tabindex="0"></tr>
+
+    </table>
+
+    <div class="barra inferior">
+        <button mat-button class="add-website-button" (click)="goToAddWebsite()">Add Website</button>
+        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons 
+        aria-label="Select page of periodic elements">
+        </mat-paginator>
+
+    </div>
+
+
+</div>
+

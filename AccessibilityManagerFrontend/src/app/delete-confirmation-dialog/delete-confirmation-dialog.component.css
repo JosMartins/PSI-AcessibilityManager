@@ -1,0 +1,21 @@
+button {
+    margin-right: 8px;
+  }
+  
+.delete_button {
+  background-color: rgba(164, 28, 28, 0.146);
+  color: rgba(255, 0, 0, 0.896);
+
+}
+
+.delete_button:hover {
+  background-color: rgba(164, 28, 28, 0.409);
+}
+
+.cancel_button {
+  background-color: rgb(248, 246, 246);
+}
+
+.cancel_button :hover{
+  background-color: rgb(170, 167, 167);
+}

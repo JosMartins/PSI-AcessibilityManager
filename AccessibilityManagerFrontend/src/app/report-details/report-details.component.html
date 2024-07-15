@@ -1,0 +1,159 @@
+<!-- your-component.component.html -->
+<div *ngIf="loading" class="loading-overlay">
+    <div class="spinner">Loading...</div>
+</div>
+<div *ngIf="!loading">
+    <div class="back-button-container">
+        <button mat-button (click)="goBack()" aria-label="Go back">
+            <mat-icon>arrow_back</mat-icon>
+            Back
+        </button>
+    </div>
+    <div class="page-header">
+        <h1 class="page-title">Accessibility Report</h1>
+        <h2 class="page-subtitle">{{ pageName }}</h2>
+    </div>
+    <mat-card class="test-summary-card">
+        <mat-card-content>
+            <div class="summary-title">Test Summary</div>
+            <div class="summary-container">
+                <div class="summary-item">
+                    <strong>Total Tests:</strong> {{ totalTests }}
+                </div>
+                <div class="summary-item">
+                    <strong>Passed Tests:</strong> {{ passedTests }} ({{ getPercentage(passedTests) }}%)
+                </div>
+                <div class="summary-item">
+                    <strong>Warning Tests:</strong> {{ warningTests }} ({{ getPercentage(warningTests) }}%)
+                </div>
+                <div class="summary-item">
+                    <strong>Failed Tests:</strong> {{ failedTests }} ({{ getPercentage(failedTests) }}%)
+                </div>
+                <div class="summary-item">
+                    <strong>Not Applicable Tests:</strong> {{ notapplicableTests }} ({{
+                    getPercentage(notapplicableTests) }}%)
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <div class="filter-container">
+        <mat-form-field appearance="fill">
+            <mat-label>Filter by Type</mat-label>
+            <mat-select [(ngModel)]="selectedType" (selectionChange)="applyFilter()">
+                <mat-option *ngFor="let type of types" [value]="type">{{ type }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Filter by Status</mat-label>
+            <mat-select [(ngModel)]="selectedStatus" (selectionChange)="applyFilter()">
+                <mat-option *ngFor="let status of statuses" [value]="status">{{ status }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="checkbox-container">
+            <mat-checkbox [(ngModel)]="selectedConformities.A" (change)="applyFilter()">A</mat-checkbox>
+            <mat-checkbox [(ngModel)]="selectedConformities.AA" (change)="applyFilter()">AA</mat-checkbox>
+            <mat-checkbox [(ngModel)]="selectedConformities.AAA" (change)="applyFilter()">AAA</mat-checkbox>
+        </div>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="mat-elevation-z8">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="fixed-width-name">Name</th>
+            <td mat-cell *matCellDef="let test" class="fixed-width-name">{{ test.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="code">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="fixed-width-code">Code</th>
+            <td mat-cell *matCellDef="let test" class="fixed-width-code">{{ test.code }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="fixed-width-description">Description</th>
+            <td mat-cell *matCellDef="let test" class="fixed-width-description">{{ test.description }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="conformity">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="fixed-width-conformity">Conformity</th>
+            <td mat-cell *matCellDef="let test" class="fixed-width-conformity">
+                <div class="conformity-container">
+                    <span *ngFor="let item of test.conformity" [ngClass]="getConformityClass(item)">{{ item }}</span>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="fixed-width-status">Status</th>
+            <td mat-cell *matCellDef="let test" class="fixed-width-status">{{ test.status }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="fixed-width-type">Type</th>
+            <td mat-cell *matCellDef="let test" class="fixed-width-type">{{ test.type }}</td>
+        </ng-container>
+
+        <!-- Expand Button Column -->
+        <ng-container matColumnDef="expand">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button *ngIf="element.results?.length > 0" mat-icon-button aria-label="expand row"
+                    (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                    <mat-icon>{{ expandedElement === element ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <!-- Expanded Content Column -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumnsWithExpand.length">
+                <div *ngIf="element == expandedElement" class="example-element-detail"
+                    [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <p><strong>Number of Results:</strong> {{ element.results?.length || 0 }}</p>
+                    <div *ngFor="let result of getResultsPage(element)" class="result-container" tabindex="0"
+                        #resultContainer>
+                        <p><strong>Result Code:</strong> {{ result.resultCode }}</p>
+                        <p><strong>Verdict:</strong> {{ result.verdict }}</p>
+                        <p><strong>Description:</strong> {{ result.description }}</p>
+                        <p *ngIf="result.pointer"><strong>Pointer:</strong> {{ result.pointer }}</p>
+
+                        <div>
+                            <br>
+                            <div *ngIf="showFullContent[result.htmlCode!]">{{ result.htmlCode }}</div>
+
+                            <span *ngIf="result.htmlCode" (click)="toggleShowFullContent(result.htmlCode)">
+                                {{ getHtmlCodePreview(result, result.htmlCode) }}
+
+                                <button type="button" class="show_more">
+                                    {{ showFullContent[result.htmlCode!] ? 'Show less' : 'Show more' }}
+                                </button>
+                            </span>
+
+
+
+                        </div>
+
+
+                    </div>
+                    <button class="showMoreBlock"
+                        *ngIf="element == expandedElement && (element.results?.length || 0) > ((resultsPage[element.code] || 0) + 1) * 10"
+                        mat-button (click)="showMoreResults(element)">
+                        Show More
+                    </button>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsWithExpand"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumnsWithExpand;"
+            [class.example-expanded-row]="expandedElement === element" [class.passed-row]="element.status === 'passed'"
+            [class.failed-row]="element.status === 'failed'" [class.warning-row]="element.status === 'warning'"
+            tabindex="0"
+            (click)="expandedElement = (expandedElement === element) || (element.results?.length <= 0) ? null : element">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+    <mat-paginator [length]="dataSource?.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons>
+    </mat-paginator>
+</div>

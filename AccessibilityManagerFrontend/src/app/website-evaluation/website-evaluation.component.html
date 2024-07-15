@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Select pages to evaluate</h2>
+<div *ngFor="let page of pages" class="page-item">
+  <mat-checkbox color ="primary" (change)="onCheckboxChange(page, $event.checked)"></mat-checkbox>
+  <div class="page-info">
+    <span><strong>URL:</strong> {{ page.url }}</span><br>
+  </div>
+</div>
+
+<mat-dialog-actions>
+  <button mat-button  class= "cancel_button" (click)="onCancel()">Cancel</button>
+  <button mat-button color = "primary" class = "evaluate_button" (click)="evaluatePages()" >Confirm</button>
+</mat-dialog-actions>

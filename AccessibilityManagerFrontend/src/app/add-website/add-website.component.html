@@ -1,0 +1,15 @@
+<div class="add-website-container">
+    <h2>Add Website</h2>
+    <form (ngSubmit)="addWebsite()" #websiteForm="ngForm">
+        <div class="form-group">
+            <label for="url">URL:</label>
+            <input type="text" id="url" name="url" [(ngModel)]="url" required>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!websiteForm.form.valid">Add Website</button>
+    </form>
+    <div *ngIf="message" class="message"><pre>{{ message }}</pre></div>
+
+    <mat-card-actions>
+        <button mat-button class="backbtn" (click)="goBack()">Go Back</button>
+    </mat-card-actions>
+</div>

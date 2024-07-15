@@ -1,0 +1,24 @@
+{
+  "name": "accessibilitymanagerbackend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "start": "PORT=3067 node ./bin/www"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@qualweb/core": "^0.7.71",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "express-async-handler": "^1.2.0",
+    "mongodb": "^5.9.2",
+    "mongoose": "^8.3.2",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.2"
+  }
+}

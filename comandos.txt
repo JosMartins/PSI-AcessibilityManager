@@ -1,0 +1,8 @@
+Em shell:
+mongo --username psi017 --password --authenticationDatabase psi017 appserver.alunos.di.fc.ul.pt/psi017
+
+Em "/home/PSI017/ProjetoSistemasInformacao/AccessibilityManagerBackend":
+npm start
+
+Em "/home/PSI017/ProjetoSistemasInformacao/AccessibilityManagerFrontend":
+npm start

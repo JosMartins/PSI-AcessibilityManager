@@ -1,0 +1,104 @@
+<div class="container" *ngIf="website">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Website Details</mat-card-title>
+        </mat-card-header>
+
+        
+        <mat-card-content>
+            <p><strong>URL:</strong> {{ website.url }}</p>
+            <p><strong>Status:</strong> {{ website.status }}</p>
+            <p><strong>Date Added:</strong> {{ website.dateAdded | date }}</p>
+            <p><strong>Pages without accessibility errors:</strong> {{counterPagesWithoutAccessibilityErrors()}} [{{ percentageOfPagesWithoutAccessibilityErrors()}}%]</p>
+            <p><strong>Pages with at least one accessibility error:</strong> {{counterPagesWithAccessibilityErrors()}} [{{percentageOfPagesWithAccessibilityErrors()}}%]</p>
+            <p><strong>Pages with at least one level A accessibility error:</strong> {{counterPagesWithLevelAAccessibilityErrors()}} [{{percentageOfPagesWithLevelAAccessibilityErrors()}}%]</p>
+            <p><strong>Pages with at least one level AA accessibility error:</strong> {{counterPagesWithLevelAAAccessibilityErrors()}} [{{percentageOfPagesWithLevelAAAccessibilityErrors()}}%]</p>
+            <p><strong>Pages with at least one level AAA accessibility error:</strong> {{counterPagesWithLevelAAAAccessibilityErrors()}} [{{percentageOfPagesWithLevelAAAAccessibilityErrors()}}%]</p>
+            <p><strong>10 most common accessibility mistakes:</strong> <pre>{{ top10Errors()}}</pre>
+            <p *ngIf="website.lastReportDate"><strong>Last Report Date:</strong> {{ website.lastReportDate | date }}</p>
+            <p><strong>Pages:</strong></p>
+            <ul>
+
+                <div class="container-checkbox" *ngIf="pages.length > 0">
+                    <input type="checkbox" class="global-checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()"> 
+                    <span>Select all Pages</span>
+                </div>
+
+                <ng-container *ngFor="let page of pages; let last = last">
+                   
+                    <li class="page-item">
+                        <div class = "page-infos">
+                            <p class="url-container"><strong>URL:</strong>{{page.url}}</p>
+                            <p><strong>Status:</strong> {{ page.status }}</p>
+                            <p><strong>Last Report Date:</strong> {{ page.lastReportDate | date}}</p>
+                        </div>
+                        <mat-card-actions class="page-report" *ngIf="page.aErrors != -1">
+                                <button mat-button class="page-report-button" (click)="open_page_report(page)">
+                                <mat-icon class="report">description</mat-icon>
+                                </button>
+                        </mat-card-actions>
+                        <input type="checkbox" class="unit-checkbox" [(ngModel)]="page.selected" (keydown.enter)="handleKeyPress(page)">
+                    </li>
+                    <hr *ngIf="!last">
+                    
+                </ng-container>
+
+                <div class="container">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Add Page</mat-label>
+                        <input matInput placeholder="Enter page URL" #pageUrl>
+                        <mat-hint *ngIf="!validUrl" class="invalid-hint">Please enter a URL that belongs to this
+                            website.</mat-hint>
+                    </mat-form-field>
+                </div>
+                <button class="add-page-btn" (click)="tryAddPage(pageUrl.value)" >Add Page</button>  
+            </ul>
+            
+         
+        </mat-card-content>
+        
+        <div *ngIf="message" class="message"><pre>{{ message }}</pre></div>
+        <mat-card-actions>
+            <button mat-button class="backbtn" (click)="goBack()">Go Back</button>
+
+        </mat-card-actions>
+    </mat-card>
+
+    <div class="action-buttons">
+
+    <mat-card-actions class="generate-website-report-html">
+        <button mat-button class="generate-website-report-button" (click)="generateHTMLReport()" (keydown.enter)="generateHTMLReport()">
+            Generate HTML Report
+        </button>
+    </mat-card-actions>   
+
+    <mat-card-actions class="generate-website-report-pdf">
+        <button mat-button class="generate-website-report-button-pdf" (click)="generateReportPDF()" (keydown.enter)="generateReportPDF()">
+            Generate PDF Report
+        </button>
+    </mat-card-actions>  
+
+    <mat-card-actions class="evaluate-pages" *ngIf="hasSelectedPages()">
+        <button mat-button class="evaluate-pages-button" (click)="evaluateSelectedPages()" (keydown.enter)="evaluateSelectedPages()">
+            Evaluate Selected Pages
+            <mat-icon class="evaluate-pages-icon">assessment</mat-icon>
+        </button>
+    </mat-card-actions>
+
+    <mat-card-actions class="delete-pages" *ngIf="hasSelectedPages()">
+        <button mat-button class="delete-pages-button" (click)="deleteSelectedPages()">
+            Delete Selected Pages
+            <mat-icon class="delete-icon">delete</mat-icon>
+        </button>
+</mat-card-actions>
+
+
+    <mat-card-actions class="delete-website">
+        <button mat-button class="delete-website-button" (click)="deleteConfirmationDialog(website._id, website.pages)" (keydown.enter)="deleteConfirmationDialog(website._id, website.pages)">
+            Delete Website
+            <mat-icon class="delete-icon">delete</mat-icon>
+        </button>
+    </mat-card-actions>
+</div>
+
+</div>
